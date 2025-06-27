@@ -33,8 +33,8 @@ public class Game {
 
 
     public void run() {
-        System.out.println("> ");
-        System.out.print("당신은 ["+ rooms[x + y* width].name() + "] 에 있습니다. ");
+        System.out.println("환영합니다!");
+        System.out.println("당신은 ["+ rooms[x + y* width].name() + "]에 있습니다.");
         System.out.println(rooms[x + y* width].description());
         System.out.println("다음 명령어를 사용할 수 있습니다.");
         System.out.println("go {north|east|south|west} - 이동, quit - 게임 종료");
@@ -42,6 +42,7 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         running = true;
         while (running) {
+            System.out.print("> ");
             String[] commands = scanner.nextLine().toLowerCase().trim().split("\\s+");
             switch (commands[0]) {
                 case "go" -> {
@@ -51,7 +52,7 @@ public class Game {
                                 System.out.println("이동할 수 없습니다.");
                             } else {
                                 y -=1;
-                                System.out.print("당신은 ["+ rooms[x + y* width].name() + "] 에 있습니다. ");
+                                System.out.println("당신은 ["+ rooms[x + y* width].name() + "]에 있습니다.");
                                 System.out.println(rooms[x + y* width].description());
                             }
                         }
@@ -89,7 +90,7 @@ public class Game {
                 default -> System.out.println("이해할 수 없는 명령어입니다.");
             }
         }
-        System.out.println("\n 게임을 종료합니다.");
+        System.out.println("\n게임을 종료합니다.");
     }
 
 
