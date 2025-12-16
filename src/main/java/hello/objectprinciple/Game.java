@@ -64,51 +64,72 @@ public class Game {
     private void play() {
         // 게임 플레이
         Scanner scanner = new Scanner(System.in);
-        running = true;
-        while (running) {
+        start();
+        while (isRunning()) {
             System.out.print("> ");
             String[] commands = scanner.nextLine().toLowerCase().trim().split("\\s+");
             switch (commands[0]) {
                 case "go" -> {
                     switch (commands[1]) {
-                        case "north" -> {
-                            if(y-1 < 0 || rooms[x + (y -1)* width] == null) {
-                                System.out.println("이동할 수 없습니다.");
-                            } else {
-                                y -=1;
-                                showRoom();
-                            }
-                        }
-                        case "south" -> {
-                            if (y + 1 >= height || rooms[x + (y + 1) * width] == null) {
-                                System.out.println("이동할 수 없습니다.");
-                            } else {
-                                y += 1;
-                                showRoom();
-                            }
-                        }
-                        case "east" -> {
-                            if (x + 1 >= width || rooms[(x + 1 ) + y * width] == null) {
-                                System.out.println("이동할 수 없습니다.");
-                            } else {
-                                x += 1;
-                                showRoom();
-                            }
-                        }
-                        case "west" -> {
-                            if (x - 1 < 0 || rooms[(x - 1) + y * width] == null) {
-                                System.out.println("이동할 수 없습니다.");
-                            } else {
-                                x -= 1;
-                                showRoom();
-                            }
-                        }
+                        case "north" -> moveNorth();
+                        case "south" -> moveSouth();
+                        case "east" -> moveEast();
+                        case "west" -> moveWest();
+
                         default -> System.out.println("이해할 수 없는 명령어입니다.");
                     }
                 }
-                case "quit" -> running = false;
+                case "quit" -> stop();
                 default -> System.out.println("이해할 수 없는 명령어입니다.");
             }
+        }
+    }
+
+    private void stop() {
+        running = false;
+    }
+
+    private boolean isRunning() {
+        return running;
+    }
+
+    private void start() {
+        running = true;
+    }
+
+    private void moveWest() {
+        if (x - 1 < 0 || rooms[(x - 1) + y * width] == null) {
+            System.out.println("이동할 수 없습니다.");
+        } else {
+            x -= 1;
+            showRoom();
+        }
+    }
+
+    private void moveEast() {
+        if (x + 1 >= width || rooms[(x + 1 ) + y * width] == null) {
+            System.out.println("이동할 수 없습니다.");
+        } else {
+            x += 1;
+            showRoom();
+        }
+    }
+
+    private void moveSouth() {
+        if (y + 1 >= height || rooms[x + (y + 1) * width] == null) {
+            System.out.println("이동할 수 없습니다.");
+        } else {
+            y += 1;
+            showRoom();
+        }
+    }
+
+    private void moveNorth() {
+        if(y-1 < 0 || rooms[x + (y -1)* width] == null) {
+            System.out.println("이동할 수 없습니다.");
+        } else {
+            y -=1;
+            showRoom();
         }
     }
 
