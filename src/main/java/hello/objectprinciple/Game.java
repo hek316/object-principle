@@ -76,13 +76,17 @@ public class Game {
                         case "east" -> moveEast();
                         case "west" -> moveWest();
 
-                        default -> System.out.println("이해할 수 없는 명령어입니다.");
+                        default -> showUnknown();
                     }
                 }
                 case "quit" -> stop();
-                default -> System.out.println("이해할 수 없는 명령어입니다.");
+                default -> showUnknown();
             }
         }
+    }
+
+    private static void showUnknown() {
+        System.out.println("이해할 수 없는 명령어입니다.");
     }
 
     private void stop() {
