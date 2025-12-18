@@ -39,8 +39,6 @@ public class Game {
     }
 
 
-
-
     private void welcome() {
         showGreeting();
         showRoom();
@@ -136,7 +134,7 @@ public class Game {
 
 
     private void tryMove(int incX, int incY) {
-        if (isBlocked(incX, incY)) {
+        if (isBlocked(x + incX, y + incY)) {
             showBlocked();
         } else {
             x += incX;
@@ -145,12 +143,12 @@ public class Game {
         }
     }
 
-    private boolean isBlocked(int incX, int incY) {
-        return isExcluded(incX, incY) || rootAt(x + incX, y + incY) == null;
+    private boolean isBlocked(int x, int y) {
+        return isExcluded(x ,  y ) || rootAt(x , y ) == null;
     }
 
-    private boolean isExcluded(int incX, int incY) {
-        return y - incY < 0 || y + incY >= height || x + incX < 0 || x + incX >= width;
+    private boolean isExcluded(int x, int y) {
+        return y < 0 || y  >= height || x  < 0 || x  >= width;
     }
 
     private static void showBlocked() {
