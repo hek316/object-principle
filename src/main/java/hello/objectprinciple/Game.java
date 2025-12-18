@@ -102,42 +102,43 @@ public class Game {
     }
 
     private void moveWest() {
-        if (x - 1 < 0 || rootAt(x - 1, y) == null) {
-            showBlocked();
-        } else {
-            x -= 1;
-            showRoom();
-        }
+        tryMove(-1, 0);
     }
 
+
     private void moveEast() {
-        if (x + 1 >= width || rootAt(x + 1, y) == null) {
-            showBlocked();
-        } else {
-            x += 1;
-            showRoom();
-        }
+        tryMove(1, 0);
     }
 
 
 
     private void moveSouth() {
-        if (y + 1 >= height || rootAt(x , y + 1)== null) {
-            showBlocked();
-        } else {
-            y += 1;
-            showRoom();
-        }
+        tryMove(0, 1);
     }
 
 
     private void moveNorth() {
-        if(y-1 < 0 || rootAt(x , y - 1)== null) {
+
+        tryMove(0, -1);
+    }
+
+
+    private void tryMove(int incX, int incY) {
+        if (isBlocked(incX, incY)) {
             showBlocked();
         } else {
-            y -=1;
+            x += incX;
+            y += incY;
             showRoom();
         }
+    }
+
+    private boolean isBlocked(int incX, int incY) {
+        return isExcluded(incX, incY) || rootAt(x + incX, y + incY) == null;
+    }
+
+    private boolean isExcluded(int incX, int incY) {
+        return y - incY < 0 || y + incY >= height || x + incX < 0 || x + incX >= width;
     }
 
     private static void showBlocked() {
