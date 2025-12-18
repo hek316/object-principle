@@ -6,12 +6,11 @@ public class Game {
 
     private int width, height;
     private Room[] rooms;
-    private int x, y;
+    private Position position;
     private boolean running = false;
 
     public Game() {
-        this.x = 0;
-        this.y = 2;
+        position = Position.of(0, 2);
         this.width = 2;
         this.height = 3;
         this.rooms = arrangeRoom(
@@ -51,8 +50,8 @@ public class Game {
     }
 
     private void showRoom() {
-        System.out.println("당신은 ["+ rooms[x + y* width].name() + "]에 있습니다.");
-        System.out.println(rooms[x + y* width].description());
+        System.out.println("당신은 ["+ rooms[position.x() + position.y() * width].name() + "]에 있습니다.");
+        System.out.println(rooms[position.x() + position.y() * width].description());
     }
 
     private  void showGreeting() {
@@ -134,21 +133,20 @@ public class Game {
 
 
     private void tryMove(int incX, int incY) {
-        if (isBlocked(x + incX, y + incY)) {
+        if (isBlocked(position.shift(incX, incY))) {
             showBlocked();
         } else {
-            x += incX;
-            y += incY;
+            position = position.shift(incX, incY);
             showRoom();
         }
     }
 
-    private boolean isBlocked(int x, int y) {
-        return isExcluded(x ,  y ) || rootAt(x , y ) == null;
+    private boolean isBlocked(Position position) {
+        return isExcluded(position) || rootAt(position) == null;
     }
 
-    private boolean isExcluded(int x, int y) {
-        return y < 0 || y  >= height || x  < 0 || x  >= width;
+    private boolean isExcluded(Position position) {
+        return position.y() < 0 || position.y()  >= height || position.x()  < 0 || position.x()  >= width;
     }
 
     private static void showBlocked() {
@@ -156,8 +154,8 @@ public class Game {
     }
 
 
-    private Room rootAt(int x, int y) {
-        return rooms[(x) + y * width];
+    private Room rootAt(Position position) {
+        return rooms[(position.x()) + position.y() * width];
     }
 
     private  void farewell() {
