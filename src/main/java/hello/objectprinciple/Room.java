@@ -19,11 +19,10 @@ public class Room {
         return description;
     }
 
-    public int x() {
-        return position.x();
+
+    public Position position() {
+        return position;
     }
 
-    public int y() {
-        return position.y();
-    }
+
 }

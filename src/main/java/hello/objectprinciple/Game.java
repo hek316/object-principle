@@ -4,15 +4,14 @@ import java.util.Scanner;
 
 public class Game {
 
-    private int width, height;
+    private Size size;
     private Room[] rooms;
     private Position position;
     private boolean running = false;
 
     public Game() {
         position = Position.of(0, 2);
-        this.width = 2;
-        this.height = 3;
+        size = Size.with(2,3);
         this.rooms = arrangeRoom(
                 new Room(Position.of(0,0), "샘", "아름다운 샘물이 흐르는 곳입니다. 이곳에서 휴식을 취할 수 있습니다."),
                 new Room(Position.of(0, 1), "다리", "큰 강 위에 돌로 만든 커다란 다리가 있습니다."),
@@ -23,9 +22,9 @@ public class Game {
     }
 
     private Room[] arrangeRoom(Room ... rooms) {
-        Room[] result = new Room[width * height];
+        Room[] result = new Room[size.area()];
         for (var room : rooms) {
-            result[room.x() + room.y()* width] = room;
+            result[size.indexOf(room.position())] = room;
         }
         return result;
     }
@@ -50,8 +49,8 @@ public class Game {
     }
 
     private void showRoom() {
-        System.out.println("당신은 ["+ rooms[position.x() + position.y() * width].name() + "]에 있습니다.");
-        System.out.println(rooms[position.x() + position.y() * width].description());
+        System.out.println("당신은 ["+ roomAt(position).name() + "]에 있습니다.");
+        System.out.println(roomAt(position).description());
     }
 
     private  void showGreeting() {
@@ -123,11 +122,11 @@ public class Game {
     }
 
     private boolean isBlocked(Position position) {
-        return isExcluded(position) || rootAt(position) == null;
+        return isExcluded(position) || roomAt(position) == null;
     }
 
     private boolean isExcluded(Position position) {
-        return position.y() < 0 || position.y()  >= height || position.x()  < 0 || position.x()  >= width;
+        return !size.contains(position);
     }
 
     private static void showBlocked() {
@@ -135,8 +134,8 @@ public class Game {
     }
 
 
-    private Room rootAt(Position position) {
-        return rooms[(position.x()) + position.y() * width];
+    private Room roomAt(Position position) {
+        return rooms[size.indexOf(position)];
     }
 
     private  void farewell() {
