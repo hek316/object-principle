@@ -1,6 +1,5 @@
 package hello.objectprinciple;
 
-import java.util.Scanner;
 
 // 단일 책임 원칙 사전 작업- 단일 추상화 수준 원칙 적용 (추상화 수준이 동일한 조합 메서드 형태로 만들기)
 // 객체 지향 핵심: 자신의 상태를 스스로 책임지는 객체
@@ -9,6 +8,7 @@ public class Game {
     private WorldMap worldMap;
     private Position position;
     private boolean running = false;
+    private Console console;
 
     public Game() {
         this.position = Position.of(0, 2);
@@ -30,11 +30,11 @@ public class Game {
     // 처리 결과를 출력한다.
     private void play() {
         // 게임 플레이
-        Scanner scanner = new Scanner(System.in);
+
         start();
         while (isRunning()) {
             showPrompt();
-            parseCommand(scanner);
+            parseCommand();
         }
     }
 
@@ -54,22 +54,22 @@ public class Game {
     }
 
     private void showHelp() {
-        System.out.println("다음 명령어를 사용할 수 있습니다.");
-        System.out.println("go {north|east|south|west} - 이동, quit - 게임 종료");
+        console.showLine("다음 명령어를 사용할 수 있습니다.");
+        console.showLine("go {north|east|south|west} - 이동, quit - 게임 종료");
     }
 
     private void showRoom() {
-        System.out.println("당신은 ["+ worldMap.roomAt(position).name() + "]에 있습니다.");
-        System.out.println(worldMap.roomAt(position).description());
+        console.showLine("당신은 ["+ worldMap.roomAt(position).name() + "]에 있습니다.");
+        console.showLine(worldMap.roomAt(position).description());
     }
 
     private  void showGreeting() {
-        System.out.println("환영합니다!");
+        console.showLine("환영합니다!");
     }
 
 
-    private void parseCommand(Scanner scanner) {
-        String[] commands = input(scanner).toLowerCase().trim().split("\\s+");
+    private void parseCommand() {
+        String[] commands = console.input().split("\\s+");
         switch (commands[0]) {
             case "go" -> {
                 switch (commands[1]) {
@@ -86,16 +86,15 @@ public class Game {
         }
     }
 
-    private String input(Scanner scanner) {
-        return scanner.nextLine();
+
+
+    private void showPrompt() {
+        console.show("> ");
+
     }
 
-    private static void showPrompt() {
-        System.out.print("> ");
-    }
-
-    private static void showUnknown() {
-        System.out.println("이해할 수 없는 명령어입니다.");
+    private void showUnknown() {
+        console.showLine("이해할 수 없는 명령어입니다.");
     }
 
     private void stop() {
@@ -125,15 +124,15 @@ public class Game {
 
 
 
-    private static void showBlocked() {
-        System.out.println("이동할 수 없습니다.");
+    private void showBlocked() {
+        console.showLine("이동할 수 없습니다.");
     }
 
 
 
     private  void farewell() {
         // 작별 문구 출력
-        System.out.println("\n게임을 종료합니다.");
+        console.showLine("\n게임을 종료합니다.");
     }
 
 }
