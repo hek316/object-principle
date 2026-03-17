@@ -51,11 +51,20 @@ public class Game {
 
     private void executeCommand(Command command) {
         switch(command) {
-            case Command.Move move -> player.tryMove(move.direction());
+            case Command.Move move -> tryMove(move.direction());
             case Command.Look() -> showRoom();
             case Command.Help() -> showHelp();
             case Command.Quit() -> stop();
             case Command.Unknown() -> showUnknownCommand();
+        }
+    }
+
+    public void tryMove(Direction direction) {
+        if (player.worldMap().isBlocked(player.position().shift(direction))) {
+            showBlocked();
+        } else {
+            player.move(player.position().shift(direction));
+            showRoom();
         }
     }
 
