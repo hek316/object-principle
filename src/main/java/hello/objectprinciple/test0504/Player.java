@@ -3,7 +3,6 @@ package hello.objectprinciple.test0504;
 public class Player {
     private WorldMap worldMap;
     private Position position;
-    private Console console;
 
     public Player(WorldMap worldMap, Position position) {
         this.worldMap = worldMap;
@@ -18,13 +17,14 @@ public class Player {
             showRoom();
         }
     }
-    public void showRoom() {
-        console.showLine("당신은 ["+ worldMap.roomAt(position).name() + "]에 있습니다.");
-        console.showLine(worldMap.roomAt(position).description());
+
+    private void showRoom() {
+        System.out.println("당신은 [" + worldMap.roomAt(position).name() + "]에 있습니다.");
+        System.out.println(worldMap.roomAt(position).description());
     }
 
     private void showBlocked() {
-        console.showLine("이동할 수 없습니다.");
+        System.out.println("이동할 수 없습니다.");
     }
 
 
