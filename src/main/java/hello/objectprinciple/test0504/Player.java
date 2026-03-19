@@ -10,8 +10,12 @@ public class Player {
     }
 
 
-    public void move(Position position) {
-        this.position = position;
+    public boolean move(Direction direction) {
+        if (worldMap.isBlocked(position.shift(direction))) {
+            return false;
+        }
+        this.position = this.position.shift(direction);
+        return true;
     }
 
 
@@ -24,5 +28,8 @@ public class Player {
         return position;
     }
 
+    public Room currentRoom() {
+        return worldMap.roomAt(position);
+    }
 
 }
